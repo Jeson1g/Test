@@ -13,7 +13,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_start_and_retrieve(self):
         self.browser.get("http://localhost:8000")
 
-        self.assertIn("To DO", self.browser.title)
+        self.assertIn("To-Do", self.browser.title)
         self.fail("Finish the test!")
 
 
