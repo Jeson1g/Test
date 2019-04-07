@@ -78,7 +78,7 @@ DATABASES = {
         'PORT': 3306,
         'USER': 'root',
         'PASSWORD': 'mysql',
-        'NAME': 'lists'
+        'NAME': 'lists',
     }
 }
 
