@@ -1,8 +1,11 @@
 from selenium import webdriver
-import unittest
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
 import time
 from django.test import LiveServerTestCase
+
+# 最大等待时长
+MAX_WAIT = 10
 
 
 class NewVisitorTest(LiveServerTestCase):
@@ -12,6 +15,20 @@ class NewVisitorTest(LiveServerTestCase):
 
     def tearDown(self):
         self.browser.quit()
+
+    def wait_for_row_in_list_table(self, row_text):
+        start_time = time.time()
+        while True:
+            try:
+                table = self.browser.find_element_by_id('id_list_table')
+                rows = table.find_elements_by_tag_name('tr')
+                strs = ''
+                if row_text in strs.join([row.text for row in rows]):
+                    return
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
 
     def test_start_and_retrieve(self):
         self.browser.get(self.live_server_url)
@@ -31,12 +48,5 @@ class NewVisitorTest(LiveServerTestCase):
         # 她按回车键后，页面更新了
         # 待办事项表格中显示了“1: Buy peacock feathers”
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(3)
 
-        table = self.browser.find_element_by_id('id_list_table')
-
-        rows = table.find_elements_by_tag_name('tr')
-        string = ''
-        self.assertIn(to_do_thing, string.join([row.text for row in rows]))
-
-        self.fail("Finish the test!")
+        self.wait_for_row_in_list_table(to_do_thing)
