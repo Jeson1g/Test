@@ -23,7 +23,7 @@ SECRET_KEY = 'nlag!iwp682op9syrd876$9vuzc)vk67f99zz!ed_lg-=5=)#y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.culee.club','culee.club','111.231.209.190','localhost']
 
 # Application definition
 
